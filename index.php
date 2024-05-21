@@ -39,6 +39,15 @@ $hotels = [
 	],
 
 ];
+$filteredHotels = [];
+if ($_GET["parking"] == "yes") {
+	$filteredHotels = array_filter($hotels, function($hotel){
+		return $hotel["parking"] == true;
+	});
+} else {
+	$filteredHotels = $hotels;
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -52,6 +61,17 @@ $hotels = [
 
 <body>
 	<div class="container">
+		<h1>Hotel List</h1>
+
+		<!-- Form di filtraggio -->
+		<!-- se l'action é vuoto, viene ricaricato lo stesso file -->
+		<form method="GET" action="">
+			<div class="form-group form-check">
+				<input type="checkbox" class="form-check-input" id="parking" name="parking" value="yes" <?php if (isset($_GET['parking']) && $_GET['parking'] == 'yes') echo 'checked'; ?>>
+				<label class="form-check-label" for="parking">Mostra solo hotel con parcheggio</label>
+			</div>
+			<button type="submit" class="btn btn-primary">Filtra</button>
+		</form>
 		<table class="table">
 			<thead>
 				<tr>
@@ -63,7 +83,7 @@ $hotels = [
 				</tr>
 			</thead>
 			<tbody>
-				<?php foreach ($hotels as $hotel) { ?>
+				<?php foreach ($filteredHotels as $hotel) { ?>
 
 					<tr>
 
